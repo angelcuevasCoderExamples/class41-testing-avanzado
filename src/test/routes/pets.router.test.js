@@ -70,3 +70,19 @@ describe('/api/pets tests', ()=>{
         expect(_body).not.to.have.property('payload')
     })
 })
+
+
+describe('/api/pets tests con MULTER', ()=>{
+    it('El endpoint de pets debe poder crear mascotas correctamente subiendo un archivo', async ()=>{
+        const {_body, statusCode} = await request.post('/api/pets/withimage')
+        .field('name',  this.petMock.name)
+        .field('specie', this.petMock.specie)
+        .field('birthDate', this.petMock.birthDate)
+        .attach('image', `${__dirname}/../puppy-1903313_640.jpg`)
+
+        //console.log(_body)
+        expect(_body).to.exist
+        expect(statusCode).to.be.equal(200)
+        expect(_body.payload).to.have.property('_id')
+    })
+})
